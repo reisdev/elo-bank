@@ -10,15 +10,15 @@ class Transacao extends Component {
     options: []
   };
   async componentDidMount() {
-    await this.updateList()
+    await this.updateList();
     this.getOptions();
   }
   getOptions = e => {
     const options = this.props.desbravadores.map(dbv => {
       return {
-        key: dbv.id,
+        key: dbv.key,
         text: dbv.nome,
-        value: dbv.id
+        value: dbv.key
       };
     });
     this.setState({ options });
@@ -28,7 +28,7 @@ class Transacao extends Component {
       const { id, tipo, valor } = this.state;
       await DB.updateSaldo(id, tipo, valor);
       this.setState({ id: 0, tipo: "", valor: "" });
-      this.updateList()
+      this.updateList();
     } catch (error) {
       console.log(error);
     }
@@ -36,7 +36,7 @@ class Transacao extends Component {
   updateList = async () => {
     const data = await DB.getAll("desbravadores");
     let lista = [];
-    data.forEach(doc => lista.push(doc.data()));
+    data.forEach(doc => lista.push({ key: doc.id, ...doc.data() }));
     this.props.setList(lista);
   };
   render() {
@@ -50,16 +50,16 @@ class Transacao extends Component {
             <div className="ui field">
               <label>Desbravador</label>
               <Select
+                selection
                 options={this.state.options}
-                onChange={(e, data) => {
-                  this.setState({ id: data.value });
-                }}
+                onChange={(e, data) => this.setState({ id: data.value })}
                 value={this.state.id}
               />
             </div>
             <div className="ui field">
               <label>Tipo</label>
               <Select
+                selection
                 options={[
                   { key: "credito", text: "Crédito", value: "credito" },
                   { key: "debito", text: "Débito", value: "debito" }
@@ -89,15 +89,19 @@ class Transacao extends Component {
 }
 
 const mapDispatchToProps = dispatch => {
-    return {
-        setList: (data) => dispatch({type: "SET_LIST",data})
-    }
-}
+  return {
+    setList: data => dispatch({ type: "SET_LIST", data }),
+    clearList: () => dispatch({type: "CLEAR_LIST"})
+  };
+};
 
 const mapStateToProps = state => {
-    return {
-        desbravadores: state.dbvs
-    }
-}
+  return {
+    desbravadores: state.dbvs
+  };
+};
 
-export default connect(mapStateToProps,mapDispatchToProps)(Transacao);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Transacao);

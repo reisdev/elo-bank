@@ -2,14 +2,18 @@ import React, { Component } from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 
 import Inicial from "../../views/pages/Inicial";
+import Controle from "../../views/pages/controle";
 
 class Router extends Component {
-  routes = [{ name: "Inicial", path: "/", Component: Inicial, exact: true }];
+  routes = [
+    { name: "Inicial", path: "/", Component: Inicial, exact: true },
+    { name: "Controle", path: "/controle", Component: Controle, exact: true }
+  ];
   render() {
     return (
       <div className="router">
         <HashRouter>
-          <Switch className="router">
+          <Switch>
             {this.routes.map(route => (
               <Route
                 key={route.name}

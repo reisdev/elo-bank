@@ -16,18 +16,21 @@ class DB {
   static getAll = async node => {
     try {
       const dbv = database.collection("desbravadores");
-      return dbv.get();
+      return dbv.orderBy("saldo", "desc").get();
     } catch (error) {
       console.log(error);
     }
   };
-  static updateSaldo = async (id, tipo, valor) => {
+  static updateSaldo = async (key, tipo, valor) => {
     try {
       const collection = database.collection("desbravadores");
-      const query = await collection.where("id", "==", id).get();
-      let dbv,
-        saldo = 0;
-      query.forEach(doc => (dbv = { key: doc.id, ...doc.data() }));
+      let dbv;
+      await collection.doc(key).get().then(doc => {
+          if(doc.exists)
+           dbv = { key: doc.id, ...doc.data() }
+          else throw Error("Desbravador não encontrado")
+      })
+      let saldo = 0;
       switch (tipo) {
         case "credito":
           saldo = dbv.saldo + parseFloat(valor);
@@ -41,13 +44,31 @@ class DB {
       if (saldo < 0) {
         throw Error("Saldo insuficiente");
       }
-      collection.doc(dbv.key).update({
+      collection.doc(key).update({
         saldo: saldo
       });
     } catch (error) {
       throw error;
     }
   };
+  static register = async (nome, unidade) => {
+    try {
+      await database.collection("desbravadores").add({
+        nome,
+        unidade,
+        saldo: 0
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+  static delete = async (node,key) => {
+      try {
+          database.collection(node).doc(key).delete()
+      } catch(error){
+          throw error
+      }
+  }
 }
 
 export default DB;
