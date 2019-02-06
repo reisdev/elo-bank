@@ -6,73 +6,102 @@ import { Confirm } from "semantic-ui-react";
 import Transacao from "./transacao";
 import DB from "../../controllers/database";
 
-export class TabelaDesbravadores extends Component {
-  state = { open: false, key: "", nome: "" };
+const mapStateToProps = state => {
+  return {
+    desbravadores: state.dbvs,
+    transacoes: state.trans
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setList: (origin, data) => {
+      dispatch({
+        type: origin === "desbravadores" ? "SET_LIST" : "SET_TRANS",
+        data
+      });
+    },
+    clearList: () => dispatch({ type: "CLEAR_LIST" })
+  };
+};
+
+class TabelaGeral extends Component {
+  state = { open: false, key: "", nome: "", lista: [], limit: 10 };
   open = (key, nome) => {
     this.setState({ key, nome, open: true });
   };
   close = () => this.setState({ open: false });
-  async componentDidMount() {
-    this.props.clearList();
-    this.updateList();
-  }
-  updateList = async () => {
-    const data = await DB.getAll("desbravadores");
-    let lista = [];
-    data.forEach(doc => lista.push({ key: doc.id, ...doc.data() }));
-    this.props.setList(lista);
-  };
   remove = async () => {
-    await DB.delete("desbravadores", this.state.key);
-    this.updateList();
+    await DB.delete(this.props.node, this.state.key);
     this.close();
   };
+  loadMore = () => {
+    this.setState({ limit: this.state.limit + 10 }, () => {
+      this.updateList();
+    });
+  };
+  updateList = async () => {
+    const data = await DB.getAll(...{
+      node: this.props.node,
+      order: this.props.order,
+      limit : this.props.expandable ? this.state.limit : 3
+    });
+    let items = [];
+    data.forEach(doc => items.push(doc.data()));
+    this.props.setList(this.props.node, items);
+  };
   render() {
-    return (
-      <table className="ui table">
-        <Confirm
-          content={`Você tem certeza que deseja remover ${this.state.nome}?`}
-          open={this.state.open}
-          onCancel={this.close}
-          onConfirm={this.remove}
-          cancelButton="Cancelar"
-          confirmButton="Confirmar"
-        />
-        <thead>
-          <tr>
-            <th>Posição</th>
-            <th>Nome</th>
-            <th>Unidade</th>
-            <th>Saldo</th>
-            {this.props.admin && <th />}
-          </tr>
-        </thead>
-        <tbody>
-          {this.props.lista.map((dbv,index) => {
-            return (
-              <tr key={"dbv-" + dbv.key}>
-                <td>{index+1}º</td>
-                <td>{dbv.nome}</td>
-                <td>{dbv.unidade}</td>
-                <td>E${dbv.saldo}</td>
-                {this.props.admin && (
-                  <td>
-                    <div
-                      onClick={e => this.open(dbv.key, dbv.nome)}
-                      className="ui red icon button"
-                    >
-                      <i className="icon close" />
-                    </div>
-                  </td>
-                )}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    );
+    if (this.props.dados !== [])
+      return (
+        <div>
+          <table className="ui compact table">
+            <Confirm
+              content={`Você tem certeza que deseja remover ${
+                this.state.nome
+              }?`}
+              open={this.state.open}
+              onCancel={this.close}
+              onConfirm={this.remove}
+              cancelButton="Cancelar"
+              confirmButton="Confirmar"
+            />
+            <thead>{this.props.header}</thead>
+            <tbody>
+              {this.props.dados.map((item, index) => {
+                let { Renderer } = this.props;
+                return (
+                  <tr key={this.props.node + "-" + index}>
+                    <Renderer
+                      {...item}
+                      id={item.key}
+                      index={index}
+                      open={this.open}
+                    />
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          { this.props.expandable && (
+            <div
+              className="ui left aligned primary button"
+              onClick={e => this.loadMore()}
+            >
+              Ver mais
+            </div>
+          )}
+        </div>
+      );
+    return <></>;
   }
 }
+
+const Tabela = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(TabelaGeral);
+
+export { Tabela };
 
 class Desbravadores extends Component {
   state = {
@@ -83,7 +112,27 @@ class Desbravadores extends Component {
       <div className="ui stackable grid centered container">
         <div className="ui row">
           <div className="ui ten wide column">
-            <Tabela />
+            <Tabela
+              node="desbravadores"
+              order={"saldo"}
+              dados={this.props.desbravadores}
+              header={
+                <tr>
+                  <th className="collapsing">Posição</th>
+                  <th>Desbravador</th>
+                  <th className="collapsing">Unidade</th>
+                  <th className="collapsing">Saldo</th>
+                </tr>
+              }
+              Renderer={props => (
+                <>
+                  <td>{props.index + 1}º</td>
+                  <td>{props.nome}</td>
+                  <td>{props.unidade}</td>
+                  <td>E${props.saldo}</td>
+                </>
+              )}
+            />
           </div>
           <div className="ui four wide column">
             <Transacao />
@@ -93,26 +142,6 @@ class Desbravadores extends Component {
     );
   }
 }
-
-const mapStateToProps = state => {
-  return {
-    lista: state.dbvs
-  };
-};
-
-const mapDispatchToProps = dispatch => {
-  return {
-    setList: data => dispatch({ type: "SET_LIST", data }),
-    clearList: () => dispatch({ type: "CLEAR_LIST" })
-  };
-};
-
-const Tabela = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TabelaDesbravadores);
-
-export { Tabela };
 
 export default connect(
   mapStateToProps,

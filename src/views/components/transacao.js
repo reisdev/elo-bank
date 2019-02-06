@@ -35,10 +35,14 @@ class Transacao extends Component {
     }
   };
   updateList = async () => {
-    const data = await DB.getAll("desbravadores");
+    const data = await DB.getAll("desbravadores","saldo");
+    const data2 = await DB.getAll("transacoes","data");
     let lista = [];
+    let lista2 = [];
     data.forEach(doc => lista.push({ key: doc.id, ...doc.data() }));
-    this.props.setList(lista);
+    data2.forEach(doc => lista2.push({ key: doc.id, ...doc.data() }));
+    this.props.setList("desbravadores",lista);
+    this.props.setList("transacoes",lista2);
   };
   render() {
     return (
@@ -91,7 +95,7 @@ class Transacao extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setList: data => dispatch({ type: "SET_LIST", data }),
+    setList: (node,data) => dispatch({ type: node === "desbravadores" ? "SET_LIST" : "SET_TRANS", data }),
     clearList: () => dispatch({ type: "CLEAR_LIST" })
   };
 };

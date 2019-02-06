@@ -13,10 +13,10 @@ const app = firebase.initializeApp(config);
 const database = app.firestore();
 
 class DB {
-  static getAll = async node => {
+  static getAll = async (node,order,limit = 10) => {
     try {
-      const dbv = database.collection("desbravadores");
-      return dbv.orderBy("saldo", "desc").get();
+      const dbv = database.collection(node);
+      return dbv.orderBy(order, "desc").limit(limit).get();
     } catch (error) {
       console.log(error);
     }
@@ -47,6 +47,12 @@ class DB {
       collection.doc(key).update({
         saldo: saldo
       });
+      database.collection("transacoes").add({
+        desbravador: dbv.nome,
+        tipo,
+        valor: parseFloat(valor),
+        data: new Date()
+      })
     } catch (error) {
       throw error;
     }
