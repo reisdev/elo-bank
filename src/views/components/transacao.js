@@ -23,7 +23,8 @@ class Transacao extends Component {
     });
     this.setState({ options });
   };
-  submit = async () => {
+  submit = async (e) => {
+    e.preventDefault()
     try {
       const { id, tipo, valor } = this.state;
       await DB.updateSaldo(id, tipo, valor);
@@ -47,40 +48,40 @@ class Transacao extends Component {
         </div>
         <div className="content">
           <div className="ui form">
-            <div className="ui field">
-              <label>Desbravador</label>
-              <Select
-                selection
-                options={this.state.options}
-                onChange={(e, data) => this.setState({ id: data.value })}
-                value={this.state.id}
-              />
-            </div>
-            <div className="ui field">
-              <label>Tipo</label>
-              <Select
-                selection
-                options={[
-                  { key: "credito", text: "Crédito", value: "credito" },
-                  { key: "debito", text: "Débito", value: "debito" }
-                ]}
-                onChange={(e, data) => this.setState({ tipo: data.value })}
-                value={this.state.tipo}
-              />
-            </div>
-            <div className="ui field">
-              <label>Valor</label>
-              <input
-                type="number"
-                onChange={e => {
-                  this.setState({ valor: e.target.value });
-                }}
-                value={this.state.valor}
-              />
-            </div>
-            <div className="ui primary button" onClick={e => this.submit()}>
-              Enviar
-            </div>
+            <form onSubmit={this.submit}>
+              <div className="ui field">
+                <label>Desbravador</label>
+                <Select
+                  selection
+                  options={this.state.options}
+                  onChange={(e, data) => this.setState({ id: data.value })}
+                  value={this.state.id}
+                />
+              </div>
+              <div className="ui field">
+                <label>Tipo</label>
+                <Select
+                  selection
+                  options={[
+                    { key: "credito", text: "Crédito", value: "credito" },
+                    { key: "debito", text: "Débito", value: "debito" }
+                  ]}
+                  onChange={(e, data) => this.setState({ tipo: data.value })}
+                  value={this.state.tipo}
+                />
+              </div>
+              <div className="ui field">
+                <label>Valor</label>
+                <input
+                  type="number"
+                  onChange={e => {
+                    this.setState({ valor: e.target.value });
+                  }}
+                  value={this.state.valor}
+                />
+              </div>
+              <button className="ui primary button">Enviar</button>
+            </form>
           </div>
         </div>
       </div>
@@ -91,7 +92,7 @@ class Transacao extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     setList: data => dispatch({ type: "SET_LIST", data }),
-    clearList: () => dispatch({type: "CLEAR_LIST"})
+    clearList: () => dispatch({ type: "CLEAR_LIST" })
   };
 };
 

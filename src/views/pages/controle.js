@@ -32,7 +32,10 @@ class RegistrarComp extends Component {
     ],
     open: false
   };
-  open = () => this.setState({ open: true });
+  open = e => {
+    e.preventDefault();
+    this.setState({ open: true });
+  };
   close = () => this.setState({ open: false });
   submit = () => {
     try {
@@ -63,24 +66,24 @@ class RegistrarComp extends Component {
         <div className="content">Registrar Desbravador</div>
         <div className="content">
           <div className="ui form">
-            <div className="ui field">
-              <label>Nome</label>
-              <input
-                value={this.state.nome}
-                onChange={e => this.setState({ nome: e.target.value })}
-              />
-            </div>
-            <div className="ui field">
-              <label>Unidade</label>
-              <Select
-                options={this.state.unidades}
-                value={this.state.unidade}
-                onChange={(e, data) => this.setState({ unidade: data.value })}
-              />
-            </div>
-            <div className="ui primary button" onClick={this.open}>
-              Registrar
-            </div>
+            <form onSubmit={this.open}>
+              <div className="ui field">
+                <label>Nome</label>
+                <input
+                  value={this.state.nome}
+                  onChange={e => this.setState({ nome: e.target.value })}
+                />
+              </div>
+              <div className="ui field">
+                <label>Unidade</label>
+                <Select
+                  options={this.state.unidades}
+                  value={this.state.unidade}
+                  onChange={(e, data) => this.setState({ unidade: data.value })}
+                />
+              </div>
+              <button className="ui primary button">Registrar</button>
+            </form>
           </div>
         </div>
       </div>

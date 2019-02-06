@@ -40,6 +40,7 @@ export class TabelaDesbravadores extends Component {
         />
         <thead>
           <tr>
+            <th>Posição</th>
             <th>Nome</th>
             <th>Unidade</th>
             <th>Saldo</th>
@@ -47,12 +48,13 @@ export class TabelaDesbravadores extends Component {
           </tr>
         </thead>
         <tbody>
-          {this.props.lista.map(dbv => {
+          {this.props.lista.map((dbv,index) => {
             return (
               <tr key={"dbv-" + dbv.key}>
+                <td>{index+1}º</td>
                 <td>{dbv.nome}</td>
                 <td>{dbv.unidade}</td>
-                <td>R${dbv.saldo}</td>
+                <td>E${dbv.saldo}</td>
                 {this.props.admin && (
                   <td>
                     <div
