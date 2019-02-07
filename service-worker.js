@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/elo-bank/precache-manifest.57a37c9c39f9b95c80dfe46500940e96.js"
+  "/elo-bank/precache-manifest.6ee0a1da03d6b282a995525bac8fdc38.js"
 );
 
 workbox.clientsClaim();

@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/elo-bank/static/media/outline-icons.cd6c777f.woff2"
   },
   {
-    "revision": "5625584dbd7f425af729",
+    "revision": "220b3b946e7b88f0aa04",
     "url": "/elo-bank/static/css/main.1943b068.chunk.css"
   },
   {
@@ -24,12 +24,12 @@ self.__precacheManifest = [
     "url": "/elo-bank/static/media/flags.9c74e172.png"
   },
   {
-    "revision": "8e3c7f5520f5ae906c6cf6d7f3ddcd19",
-    "url": "/elo-bank/static/media/icons.8e3c7f55.eot"
-  },
-  {
     "revision": "0ab54153eeeca0ce03978cc463b257f7",
     "url": "/elo-bank/static/media/icons.0ab54153.woff2"
+  },
+  {
+    "revision": "8e3c7f5520f5ae906c6cf6d7f3ddcd19",
+    "url": "/elo-bank/static/media/icons.8e3c7f55.eot"
   },
   {
     "revision": "faff92145777a3cbaf8e7367b4807987",
@@ -44,8 +44,8 @@ self.__precacheManifest = [
     "url": "/elo-bank/static/media/outline-icons.701ae6ab.eot"
   },
   {
-    "revision": "5625584dbd7f425af729",
-    "url": "/elo-bank/static/js/main.5625584d.chunk.js"
+    "revision": "220b3b946e7b88f0aa04",
+    "url": "/elo-bank/static/js/main.220b3b94.chunk.js"
   },
   {
     "revision": "ef60a4f6c25ef7f39f2d25a748dbecfe",
@@ -84,7 +84,7 @@ self.__precacheManifest = [
     "url": "/elo-bank/static/css/1.cfb218b7.chunk.css"
   },
   {
-    "revision": "31a25636729b08d0d438ee8733df1582",
+    "revision": "34b25ce3e99b2be7efe6c02aef9c27fd",
     "url": "/elo-bank/index.html"
   }
 ];

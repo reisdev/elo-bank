@@ -1,7 +1,7 @@
 {
   "main.css": "/elo-bank/static/css/main.1943b068.chunk.css",
-  "main.js": "/elo-bank/static/js/main.5625584d.chunk.js",
-  "main.js.map": "/elo-bank/static/js/main.5625584d.chunk.js.map",
+  "main.js": "/elo-bank/static/js/main.220b3b94.chunk.js",
+  "main.js.map": "/elo-bank/static/js/main.220b3b94.chunk.js.map",
   "static/css/1.cfb218b7.chunk.css": "/elo-bank/static/css/1.cfb218b7.chunk.css",
   "static/js/1.d5d41ea8.chunk.js": "/elo-bank/static/js/1.d5d41ea8.chunk.js",
   "static/js/1.d5d41ea8.chunk.js.map": "/elo-bank/static/js/1.d5d41ea8.chunk.js.map",
@@ -11,6 +11,6 @@
   "static/css/main.1943b068.chunk.css.map": "/elo-bank/static/css/main.1943b068.chunk.css.map",
   "static/css/1.cfb218b7.chunk.css.map": "/elo-bank/static/css/1.cfb218b7.chunk.css.map",
   "index.html": "/elo-bank/index.html",
-  "precache-manifest.57a37c9c39f9b95c80dfe46500940e96.js": "/elo-bank/precache-manifest.57a37c9c39f9b95c80dfe46500940e96.js",
+  "precache-manifest.6ee0a1da03d6b282a995525bac8fdc38.js": "/elo-bank/precache-manifest.6ee0a1da03d6b282a995525bac8fdc38.js",
   "service-worker.js": "/elo-bank/service-worker.js"
 }
