@@ -16,8 +16,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setList: (origin,data) => {
-      dispatch({ type: origin === "desbravadores" ? "SET_LIST" : "SET_TRANS", data });
+    setList: (origin, data) => {
+      dispatch({
+        type: origin === "desbravadores" ? "SET_LIST" : "SET_TRANS",
+        data
+      });
     },
     clearList: () => dispatch({ type: "CLEAR_LIST" })
   };
@@ -32,7 +35,8 @@ class RegistrarComp extends Component {
       { key: "mercurio", text: "Mercúrio", value: "Mercúrio" },
       { key: "paladio", text: "Paládio", value: "Paládio" },
       { key: "platina", text: "Platina", value: "Platina" },
-      { key: "uranio", text: "Urânio", value: "Urânio" }
+      { key: "uranio", text: "Urânio", value: "Urânio" },
+      { key: "titanio", text: "Titânio", value: "Titânio"}
     ],
     open: false
   };
@@ -52,9 +56,9 @@ class RegistrarComp extends Component {
   };
   updateList = async () => {
     const data = await DB.getAll("desbravadores", "saldo");
-    let items = []
-    data.forEach(doc => items.push(doc.data()))
-    this.props.setList("desbravadores",items);
+    let items = [];
+    data.forEach(doc => items.push(doc.data()));
+    this.props.setList("desbravadores", items);
   };
   render() {
     return (
@@ -101,17 +105,18 @@ const Registrar = connect(
 )(RegistrarComp);
 
 class Controle extends Component {
-  componentDidMount(){
-    this.updateList()
+  componentDidMount() {
+    this.updateList();
   }
   updateList = async () => {
-    const data = await DB.getAll("desbravadores", "saldo",this.state.limit);
-    const data2 = await DB.getAll("transacoes", "data",this.state.limit);
-    let items = [], items2 = [];
-    data.forEach(doc => items.push(doc.data()))
-    data2.forEach(doc => items2.push(doc.data()))
-    this.props.setList("desbravadores",items);
-    this.props.setList("transacoes",items2);
+    const data = await DB.getAll("desbravadores", "saldo", this.state.limit);
+    const data2 = await DB.getAll("transacoes", "data", this.state.limit);
+    let items = [],
+      items2 = [];
+    data.forEach(doc => items.push({ key: doc.id, ...doc.data() }));
+    data2.forEach(doc => items2.push({ key: doc.id, ...doc.data() }));
+    this.props.setList("desbravadores", items);
+    this.props.setList("transacoes", items2);
   };
   state = {};
   panes = [
@@ -204,7 +209,7 @@ class Controle extends Component {
                 />
               </div>
               <div className="ui four wide column">
-                  <Transacao/>
+                <Transacao />
               </div>
             </div>
           </div>

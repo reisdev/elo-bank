@@ -41,11 +41,11 @@ class TabelaGeral extends Component {
     });
   };
   updateList = async () => {
-    const data = await DB.getAll(...{
-      node: this.props.node,
-      order: this.props.order,
-      limit : this.props.expandable ? this.state.limit : 3
-    });
+    const data = await DB.getAll(
+      this.props.node,
+      this.props.order,
+      this.state.limit
+    );
     let items = [];
     data.forEach(doc => items.push(doc.data()));
     this.props.setList(this.props.node, items);
@@ -82,7 +82,7 @@ class TabelaGeral extends Component {
               })}
             </tbody>
           </table>
-          { this.props.expandable && (
+          {this.props.expandable && (
             <div
               className="ui left aligned primary button"
               onClick={e => this.loadMore()}
