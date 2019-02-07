@@ -78,6 +78,7 @@ class RegistrarComp extends Component {
               <div className="ui field">
                 <label>Nome</label>
                 <input
+                  required
                   value={this.state.nome}
                   onChange={e => this.setState({ nome: e.target.value })}
                 />
@@ -85,6 +86,7 @@ class RegistrarComp extends Component {
               <div className="ui field">
                 <label>Unidade</label>
                 <Select
+                  required
                   options={this.state.unidades}
                   value={this.state.unidade}
                   onChange={(e, data) => this.setState({ unidade: data.value })}

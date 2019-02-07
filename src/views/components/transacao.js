@@ -56,6 +56,7 @@ class Transacao extends Component {
               <div className="ui field">
                 <label>Desbravador</label>
                 <Select
+                  required
                   selection
                   options={this.state.options}
                   onChange={(e, data) => this.setState({ id: data.value })}
@@ -65,6 +66,7 @@ class Transacao extends Component {
               <div className="ui field">
                 <label>Tipo</label>
                 <Select
+                  required
                   selection
                   options={[
                     { key: "credito", text: "Crédito", value: "credito" },
@@ -77,6 +79,7 @@ class Transacao extends Component {
               <div className="ui field">
                 <label>Valor</label>
                 <input
+                  required
                   type="number"
                   onChange={e => {
                     this.setState({ valor: e.target.value });
